@@ -1,0 +1,344 @@
+{
+  "intents": [
+    {
+      "intent": "cadastrar_aluno",
+      "examples": [
+        {
+          "text": "quero fazer o vestibular"
+        },
+        {
+          "text": "quero me cadastrar"
+        },
+        {
+          "text": "quero me cadastrar na fiap"
+        },
+        {
+          "text": "quero ser aluno"
+        }
+      ],
+      "description": ""
+    }
+  ],
+  "entities": [
+    {
+      "entity": "cadastro_aluno",
+      "values": [
+        {
+          "type": "patterns",
+          "value": "celular",
+          "patterns": [
+            "(^\\(?[1-9]{2}\\)? ?(?:[2-8]|9[1-9])[0-9]{3}\\-?[0-9]{4}$)"
+          ]
+        },
+        {
+          "type": "patterns",
+          "value": "cpf",
+          "patterns": [
+            "(^\\d{3}\\.\\d{3}\\.\\d{3}\\-\\d{2}$)"
+          ]
+        },
+        {
+          "type": "patterns",
+          "value": "nome",
+          "patterns": [
+            "(^[\\w'\\-,.][^0-9_!¡?÷?¿/\\\\+=@#$%ˆ&*(){}|~<>;:[\\]]{2,}$)"
+          ]
+        }
+      ],
+      "fuzzy_match": true
+    }
+  ],
+  "metadata": {
+    "api_version": {
+      "major_version": "v2",
+      "minor_version": "2018-11-08"
+    }
+  },
+  "dialog_nodes": [
+    {
+      "type": "standard",
+      "title": "Bem-vindo",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Eai, blz?? Eu sou o Jorge e vou te ajudar a traçar seus passos para ser aluno na fiap"
+              },
+              {
+                "text": "Opa, como posso te ajudar??"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "welcome",
+      "dialog_node": "Bem-vindo"
+    },
+    {
+      "type": "standard",
+      "title": "Em outros casos",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Eu não entendi. Você pode tentar reformular a frase."
+              },
+              {
+                "text": "Você pode reformular sua afirmação? Eu não estou entendendo."
+              },
+              {
+                "text": "Eu não entendi o sentido."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "anything_else",
+      "dialog_node": "Em outros casos",
+      "previous_sibling": "node_10_1623637022321",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Manda ai seu CPF:"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "slot_5_1623674922382",
+      "event_name": "focus",
+      "dialog_node": "handler_3_1623674922402",
+      "previous_sibling": "handler_6_1623674922402"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Agora nos informe seu nome:"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "slot_9_1623677075097",
+      "event_name": "focus",
+      "dialog_node": "handler_3_1623677075116",
+      "previous_sibling": "handler_8_1623677075116"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_5_1623674922382",
+      "context": {
+        "cpf": "@cadastro_aluno:cpf"
+      },
+      "conditions": "@cadastro_aluno:cpf",
+      "event_name": "input",
+      "dialog_node": "handler_6_1623674922402"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_1_1623677529701",
+      "context": {
+        "celular": "@cadastro_aluno:celular"
+      },
+      "conditions": "@cadastro_aluno:celular",
+      "event_name": "input",
+      "dialog_node": "handler_6_1623677529718"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_9_1623677075097",
+      "context": {
+        "nome": "@cadastro_aluno:nome"
+      },
+      "conditions": "@cadastro_aluno:nome",
+      "event_name": "input",
+      "dialog_node": "handler_8_1623677075116"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Agora por ultimo, nos informe seu celular:"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "slot_1_1623677529701",
+      "event_name": "focus",
+      "dialog_node": "handler_8_1623677529718",
+      "previous_sibling": "handler_6_1623677529718"
+    },
+    {
+      "type": "frame",
+      "title": "Cadastrar Aluno",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": ""
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "context": {},
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "condition",
+        "dialog_node": "node_7_1623674857210"
+      },
+      "conditions": "#cadastrar_aluno",
+      "dialog_node": "node_10_1623637022321",
+      "previous_sibling": "Bem-vindo"
+    },
+    {
+      "type": "frame",
+      "title": "Cadastra CPF",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Show!! Salvei seu cpf aqui e ele é $cpf"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_10_1623637022321",
+      "context": {
+        "cpf": "<? input.text ?>"
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "condition",
+        "dialog_node": "node_8_1623676994286"
+      },
+      "conditions": "true",
+      "dialog_node": "node_7_1623674857210"
+    },
+    {
+      "type": "frame",
+      "title": "Cadastrar celular",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Maravilha, agora temos as informações principais e seu número é $celular"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_8_1623676994286",
+      "context": {
+        "celular": "<? input.text ?>"
+      },
+      "conditions": "true",
+      "dialog_node": "node_7_1623677486725"
+    },
+    {
+      "type": "frame",
+      "title": "Cadastrar nome ",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Boa, obrigado $nome"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_7_1623674857210",
+      "context": {
+        "nome": "<? input.text ?>"
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "condition",
+        "dialog_node": "node_7_1623677486725"
+      },
+      "conditions": "true",
+      "dialog_node": "node_8_1623676994286"
+    },
+    {
+      "type": "slot",
+      "parent": "node_7_1623677486725",
+      "variable": "$celular",
+      "dialog_node": "slot_1_1623677529701"
+    },
+    {
+      "type": "slot",
+      "parent": "node_7_1623674857210",
+      "variable": "$cpf",
+      "dialog_node": "slot_5_1623674922382",
+      "previous_sibling": "node_8_1623676994286"
+    },
+    {
+      "type": "slot",
+      "parent": "node_8_1623676994286",
+      "variable": "$nome",
+      "dialog_node": "slot_9_1623677075097",
+      "previous_sibling": "node_7_1623677486725"
+    }
+  ],
+  "counterexamples": [],
+  "system_settings": {
+    "disambiguation": {
+      "prompt": "Você quis dizer:",
+      "enabled": true,
+      "randomize": true,
+      "max_suggestions": 5,
+      "suggestion_text_policy": "title",
+      "none_of_the_above_prompt": "Nenhuma das anteriores"
+    },
+    "human_agent_assist": {
+      "prompt": "Você quis dizer:"
+    }
+  },
+  "learning_opt_out": false,
+  "name": "Auxilia Aluno",
+  "language": "pt-br",
+  "description": ""
+}
